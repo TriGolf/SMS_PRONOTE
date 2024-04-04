@@ -1,13 +1,13 @@
 ## Que fait ce code ?
 Ce script vous envoie un sms quand vous obtenez une nouvelle note pronote de cette manière :
 
-**Vous avez recu une nouvelle note le [date] qui est de [note] en [matière] avec un coefficient de [coefficient].**
+**Vous avez recu une nouvelle note en {Matière} qui est de {Note}/{Max de points (généralement 20)} avec un coefficient de {coef}.**
                      
-**La moyenne de la classe est [moyenne de classe] et la meilleure note est [meilleure note]**
+**La moyenne de la classe est {moyenne de classee}/{Max de points} et la meilleure note est {meilleure note}/{Max de points}**
 
-**Cette note fais passer votre moyenne a [votre moyenne]**
+**Cette note fait passer votre moyenne générale à {moyenne générale}**
 
-Lors du lancement, vous recevrez le message "Programme lancé"
+Lors du lancement, vous recevrez le message `Programme lancé`, ce qui confirmera que le programme marche correctement
 
 ## Dépendances
 
