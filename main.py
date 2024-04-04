@@ -1,48 +1,72 @@
-#import libraries
+#importe les bibliothèques
 import pronotepy
-from pronotepy.ent import ac_orleans_tours # your ent
+from pronotepy.ent import ac_orleans_tours
 import time
 import requests
+from datetime import datetime
 
-#initialize the variables
-last_grade = ''
+#initialise la variable
+last_note = ''
 
-# connect to pronote using the ENT
-client = pronotepy.Client(
-    'https://0000000a.index-education.net/pronote/eleve.html',
-    username='username', # your id ENT !!!
-    password="password", # your mdp
-    ent=ac_orleans_tours) # your academie
+#se connecte à pronote
+
+def connection_pronote():
+    client = pronotepy.Client(
+        'https://0450047g.index-education.net/pronote/eleve.html',
+        username='nom d\' utilisateur', # votre identifiant ENT !!!
+        password="Mot de passe", # votre mot de passe
+        ent=ac_orleans_tours)
+    return client
 
 
-def send_grade(message) :
-    sms_id = 'sms_id' # id Free Mobile
-    sms_key = 'sms_key' # password in sms notifications in my options
+def envoyer(message) :
+    sms_id = 'Identifiant free mobile' # Votre identifiant Free Mobile
+    sms_key = 'clée secrète (token)' # La clée obtenue dans mes options puis notifications sms
     res = requests.get(f'https://smsapi.free-mobile.fr/sendmsg?user={sms_id}&pass={sms_key}&msg={message}') # envoie
-    print(f'le message {message} a été envoyé') # Confirmation
-
-def check_new_grade(last_grade) : # check if they are a new grade
-    grade = []
+    print(f"{message}\na été envoyé à {datetime.today().strftime('%d-%m-%Y %H:%M')}")
+    
+def verif_nouvelle_note(last_note) : # vérifie s'il y a une nouvelle note
+    notes = []
     for grade in client.current_period.grades:  # iterate over all the grades
-        grade.append(f'''Vous avez recu une nouvelle note le {grade.date} qui est de {grade.grade}/{grade.out_of} en {grade.subject.name} avec un coefficient de {grade.coefficient}.
+        notes.append(f'''Vous avez recu une nouvelle note en {grade.subject.name} qui est de {grade.grade}/{grade.out_of} avec un coefficient de {grade.coefficient}.
                      
-La moyenne de la classe est {grade.average} et la meilleure note est {grade.max}
+La moyenne de la classe est {grade.average}/{grade.out_of} et la meilleure note est {grade.max}/{grade.out_of}
 
-Cette note fais passer votre moyenne a {client.current_period.overall_average}''') 
-
-        
-    grade.sort(reverse=True) # sort by date
-    if grade[0] != last_grade : # check if it's a new grade
-        return grade[0]
+Cette note fait passer votre moyenne générale à {client.current_period.overall_average}''') 
+ 
+    notes=list(reversed(notes))
+    if notes[0] != last_note : # vérifie si c'est une nouvelle note
+        return notes[0]
     
     else :
         return False
 
-while True :
-    check = check_new_grade(last_grade)
+envoyer("Programme lance")
+execution = 0
+while 1 :
 
-    if check :
-        last_grade = check
-        send_grade(check)
+
+
+    try :
+        client = connection_pronote()
+    except :
+        print('échec de connection')
+        
+    verif = verif_nouvelle_note(last_note)
+
+    if verif :
+        last_note = verif
+        if execution != 0 :
+            envoyer(verif)
+        else :
+            execution = 1
+        
+    try : 
+        del client
+        
+    except :
+        pass
+        
+    print(datetime.today().strftime('%H:%M')) #Pour vérifier si le programme marche toujours dans la console
     
-    time.sleep(600) # To not surcharge the serveur
+    time.sleep(3600) # Pour ne pas surcharger le serveur pronote
