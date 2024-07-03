@@ -14,7 +14,7 @@ Lors du lancement, vous recevrez le message `Programme lancé`, ce qui confirmer
 Ce code utilise pronotepy
 Installation : `pip install -U pronotepy`
 
-Vous devez aussi avoir un compte free mobile (actuellement le seul compatible)
+Vous devez aussi avoir un compte free mobile (actuellement le seul compatible mais libre à vous de l'adapter avec des mails)
 Vous devrez activer l'api sms et noter votre identifiant et votre token
 
 ## Utilisation du programme
