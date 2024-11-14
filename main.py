@@ -12,7 +12,7 @@ last_note = ''
 
 def connection_pronote():
     client = pronotepy.Client(
-        'https://0450047g.index-education.net/pronote/eleve.html',
+        'adresse de l'établissement comme ceci : https://XXXXXXXa.index-education.net/pronote/eleve.html',
         username='nom d\' utilisateur', # votre identifiant ENT !!!
         password="Mot de passe", # votre mot de passe
         ent=ac_orleans_tours)
